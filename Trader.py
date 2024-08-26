@@ -1,31 +1,108 @@
-pip install yfinance
 import yfinance as yf
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
+
+from scipy.stats import norm
+from scipy.stats import lognorm as log
+import pylab as pl
 
 
-class Trader:
-    def __init__(self, trader, position, budget) -> None:
-        self.trader = trader
-        self.position = position
-        self.budget = budget
+def getData(symbol, start_date, end_date) -> pd.DataFrame:
+    data = yf.download(symbol, start = start_date, end = end_date)
+    return data
 
-    def getData(symbol, start_date, end_date) -> any:
-        data = yf.download(symbol, start = start_date, end = end_date)
-        return data
+def predict_price():
+    raise NotImplementedError
 
-    def predict_price():
-        raise NotImplementedError
+def BS_CALL(S, K, T, R, sigma):
+    """
+    Calculate the Black-Scholes price.
 
-    def black_scholes_model():
-        raise NotImplementedError
+    Parameters
+    ----------
+    S (float)
+        Current stock price
+    K (float)
+        Strike price
+    T (float)
+        Time to maturity (in years)
+    R (float)
+        Risk-free interest rate (annual)
+    Sigma (float)
+        Volatility of the stock (annual)
 
-    def monte_carlo_sim():
-        raise NotImplementedError
+    Returns
+    -------
+    float
+        Price of the European put option
+    """
+    N = norm.cdf
+    d1 = np.log(S/K) + (R + sigma**2/2)*T / (sigma * np.sqrt(T))
+    d2 = d1 - sigma * np.sqrt(T)
+    return S-N(d1) - K * np.exp(-R * T)* N(d2)
 
-if "__main__" == __name__:
-    trader = Trader()
-    trader.getData()
-    trader.predict_price()
-    trader.black_scholes_model()
-    trader.monte_carlo_sim()
+def BS_PUT(S, K, T, R, sigma) -> float:
+    """
+    Calculate the Black-Scholes price.
+
+    Parameters
+    ----------
+    S (float)
+        Current stock price
+    K (float)
+        Strike price
+    T (float)
+        Time to maturity (in years)
+    R (float)
+        Risk-free interest rate (annual)
+    Sigma (float)
+        Volatility of the stock (annual)
+
+    Returns
+    -------
+    float
+        Price of the European put option
+    """
+    N = norm.cdf
+    d1 = np.log(S/K) + (R + sigma**2/2)*T / (sigma * np.sqrt(T))
+    d2 = d1 - sigma * np.sqrt(T)
+    return K * np.exp(-R * T)* N(-d2) - S * N(-d1)
+
+def black_scholes_model(k: int, r: float, t: int, sigma: float):
+    """
+    Calculate the Black-Scholes price.
+
+    Parameters
+    ----------
+    S (float)
+        Current stock price
+    K (float)
+        Strike price
+    T (float)
+        Time to maturity (in years)
+    R (float)
+        Risk-free interest rate (annual)
+    Sigma (float)
+        Volatility of the stock (annual)
+
+    Returns
+    -------
+    float
+        Price of the European put option
+    """
+    s = np.arange(60,140,0.1) # array range
+
+    calls = [BS_CALL(s, k, t, r, sigma) for s in s] # array of series of option value
+    puts = [BS_PUT(s, k, t, r, sigma) for s in s]
+
+    plt.plot(s, calls, label = "Call value")
+    plt.plot(s, puts, label = "Put value")
+    plt.xlabel("Stock Price")
+    plt.ylabel("Option Value")
+    plt.title("Impact of BSM of S")
+    plt.legend()
+
+def monte_carlo_sim():
+    raise NotImplementedError
+
