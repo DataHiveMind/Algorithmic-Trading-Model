@@ -1,3 +1,5 @@
+def __init__(self):
+        pass
 
 def data_preprocessing(self):
         # Implement logic for cleaning, transforming, and preparing the data for analysis.

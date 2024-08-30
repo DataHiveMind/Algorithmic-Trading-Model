@@ -1,3 +1,5 @@
+def __init__(self):
+        pass
 
 def update_order_book(self):
         # Implement logic to fetch and update the order book

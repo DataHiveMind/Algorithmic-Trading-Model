@@ -7,15 +7,28 @@ from scipy.stats import norm
 from scipy.stats import lognorm as log
 import pylab as pl
 
+def __init__(self):
+    pass
+
 
 def getData(symbol, start_date, end_date) -> pd.DataFrame:
     data = yf.download(symbol, start = start_date, end = end_date)
     return data
 
+def Options(k: int, s: int)-> any:
+    # Options payoff modelling
+    optype = input("Rnter the option type (C/P): ")
+
+    if optype == "C":
+        payoff = max(0, (s-k)) # Make Money when Stock goes Up
+    elif optype == "P":
+        payoff = max(0, (k-s)) # Make Money when Stock goes Down
+    print("Payoff is: ", payoff)
+
 def predict_price():
     raise NotImplementedError
 
-def BS_CALL(S, K, T, R, sigma):
+def BS_CALL(S: float, K: float, T: float, R: float, sigma:float):
     """
     Calculate the Black-Scholes price.
 

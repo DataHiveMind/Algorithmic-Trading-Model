@@ -1,3 +1,5 @@
+def __init__(self):
+        pass
 
 def risk_management(self):
         # Implement logic for risk management strategies
