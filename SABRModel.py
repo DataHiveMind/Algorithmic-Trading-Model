@@ -1,3 +1,5 @@
+def __init__(self):
+        pass
 
 def simulate_volatility(self):
         # Implement the simulation logic for SABR model

@@ -1,3 +1,5 @@
+import matplotlib.pyplot as plt
+
 
 def calculate_returns(self):
         self.returns = self.data.pct_change().dropna()

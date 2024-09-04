@@ -7,7 +7,7 @@ import yfinance as yf
 
 # Python File Functions
 import FinancialDerivativePricer as FDP
-
+import Backtest as back
 import FinancialTimeSeriesAnalyzer as FTSA
 import HestonModel as HM
 import HighFrequencyTrader as HFT
@@ -37,10 +37,10 @@ MCS = tr.monte_carlo_sim()
 
 # EDA and Display the Data 
 import FinancialIndictator as FIR
-import pygwalker as pyg
+# import pygwalker as pyg
 
 df = pd.read_csv('./bike_sharing_dc.csv')
-walker = pyg.walk(df)
+#walker = pyg.walk(df)
 
 # Use of Financial MatheMatics
 import FinancialMathematics as FM
@@ -51,6 +51,9 @@ FM.Portfolio_Valuation()
 
 
 if __name__ == "__main__":
+    stock = yf.download("AAPl", start_date = "2015-01-01", end_date = "2020-01-01")
+    test = back.sma(stock['Close', 14])
+    print(test)
 
     loan_data = {'borrower_income': 50000, 'debt_to_income': 0.5, 
              'credit_score': 700, 'loan_amount': 10000, 'loan_term': 36, 
